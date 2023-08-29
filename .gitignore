@@ -1,0 +1,22 @@
+*.swp
+package-lock.json
+__pycache__
+.pytest_cache
+.venv
+*.egg-info
+node_modules
+*.pack
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+amplify/amplify/.config/project-config.json
+amplify/amplify/backend/hosting/amplifyhosting/amplifyhosting-template.json
+amplify/amplify/cli.json
+amplify/amplify/team-provider-info.json
+amplify/amplify/backend/backend-config.json
+amplify/amplify/backend/tags.json
+amplify/amplify/backend/types/amplify-dependent-resources-ref.d.ts
+
+.DS_Store
