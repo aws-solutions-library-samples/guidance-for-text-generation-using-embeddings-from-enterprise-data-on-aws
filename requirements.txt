@@ -1,6 +1,6 @@
 aws-cdk-lib==2.77.0
 constructs>=10.0.0,<11.0.0
-sagemaker==2.148.0
+sagemaker==2.218.0
 nest-asyncio==1.5.5
 boto3
 aws_cdk.aws_batch_alpha>=2.72.0a
