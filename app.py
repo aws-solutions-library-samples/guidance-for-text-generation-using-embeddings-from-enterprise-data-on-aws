@@ -68,17 +68,17 @@ TXT2EMB_MODEL_INFO = get_sagemaker_uris(model_id=TXT2EMB_MODEL_ID,
                                         region_name=region_name)
 
 app = cdk.App()
+description = "Guidance for Text Generation using Embeddings from Enterprise Data on AWS (SO9319)"
+sagemaker_vpc_stack = GenerativeAiVpcNetworkStack(app, "SecureGenAIAppVpcStack", description=description, env=env)
+sagemaker_txt2txt_stack = SageMakerLLMTxt2TxtEndpointStack(app, "GenerativeAITxt2TxtStack", description=description, env=env, model_info=TXT2TXT_MODEL_INFO, vpc_stack=sagemaker_vpc_stack.vpc)
 
-sagemaker_vpc_stack = GenerativeAiVpcNetworkStack(app, "SecureGenAIAppVpcStack", env=env)
-sagemaker_txt2txt_stack = SageMakerLLMTxt2TxtEndpointStack(app, "GenerativeAITxt2TxtStack", env=env, model_info=TXT2TXT_MODEL_INFO, vpc_stack=sagemaker_vpc_stack.vpc)
+sagemaker_txt2img_stack = SageMakerLLMTxt2ImgEndpointStack(app, "GenerativeAITxt2ImgStack", description=description, env=env, model_info=TXT2IMG_MODEL_INFO, vpc_stack=sagemaker_vpc_stack.vpc)
+sagemaker_txt2emb_stack = SageMakerLLMTxt2EmbEndpointStack(app, "GenerativeAITxt2EmbStack", description=description, env=env, model_info=TXT2EMB_MODEL_INFO, vpc_stack=sagemaker_vpc_stack.vpc)
 
-sagemaker_txt2img_stack = SageMakerLLMTxt2ImgEndpointStack(app, "GenerativeAITxt2ImgStack", env=env, model_info=TXT2IMG_MODEL_INFO, vpc_stack=sagemaker_vpc_stack.vpc)
-sagemaker_txt2emb_stack = SageMakerLLMTxt2EmbEndpointStack(app, "GenerativeAITxt2EmbStack", env=env, model_info=TXT2EMB_MODEL_INFO, vpc_stack=sagemaker_vpc_stack.vpc)
+opensearch_embeddings_stack = OpenSearchEmbeddingDomainStack(app, "OpenSearchEmbeddingDomainStack", description=description, env=env, vpc_stack=sagemaker_vpc_stack.vpc, cross_region_references=True)
+docs_2_embeddings_os_indexing_stack = Docs2EmbeddingsOSIndexingStack(app, "Docs2EmbeddingsOSIndexingStack", description=description, env=env, vpc_stack=sagemaker_vpc_stack.vpc, cross_region_references=True)
 
-opensearch_embeddings_stack = OpenSearchEmbeddingDomainStack(app, "OpenSearchEmbeddingDomainStack", env=env, vpc_stack=sagemaker_vpc_stack.vpc, cross_region_references=True)
-docs_2_embeddings_os_indexing_stack = Docs2EmbeddingsOSIndexingStack(app, "Docs2EmbeddingsOSIndexingStack", env=env, vpc_stack=sagemaker_vpc_stack.vpc, cross_region_references=True)
-
-genai_amplify_app_api_lambda_stack = GenAIAmplifyAppAPILambdaStack(app, "GenAIAmplifyAppAPILambdaStack", env=env, vpc_stack=sagemaker_vpc_stack.vpc, cross_region_references=True)
+genai_amplify_app_api_lambda_stack = GenAIAmplifyAppAPILambdaStack(app, "GenAIAmplifyAppAPILambdaStack", description=description, env=env, vpc_stack=sagemaker_vpc_stack.vpc, cross_region_references=True)
 
 sagemaker_txt2img_stack.add_dependency(sagemaker_vpc_stack)
 sagemaker_txt2emb_stack.add_dependency(sagemaker_vpc_stack)
